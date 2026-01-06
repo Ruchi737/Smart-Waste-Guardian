@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Waste Guardian ♻️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+  font-family: "Segoe UI", Arial;
+  background:#0b1220;
+  color:white;
+  margin:0;
+}
+
+.header{
+  padding:25px;
+  text-align:center;
+  background:linear-gradient(90deg,#00ff8c,#0084ff);
+  -webkit-background-clip:text;
+  color:transparent;
+  font-size:28px;
+  font-weight:800;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.card{
+  background:#111b2e;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 0 25px #00ff8855;
+  margin-top:15px;
+}
+
+input,textarea,select{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:8px;
+  border:2px solid #00ff99;
+  background:#021126;
+  color:white;
+}
+
+button{
+  background:#00ffa6;
+  border:none;
+  padding:12px 25px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s;
+}
+
+button:hover{
+  background:white;
+  color:#0b1220;
+}
+
+.resultBox{
+  margin-top:20px;
+  padding:15px;
+  background:#06294d;
+  border-radius:8px;
+  font-size:17px;
+  line-height:1.6;
+}
+
+.historyBox{
+  padding:15px;
+  background:#031629;
+  border-radius:8px;
+  margin-top:10px;
+}
+
+.tag{
+  padding:6px 10px;
+  border-radius:50px;
+  background:#00ffa6;
+  color:black;
+  font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">SMART WASTE GUARDIAN ♻️</div>
+
+<div class="container">
+
+<div class="card">
+<h2>📌 Identify Waste + Get AI Suggestion</h2>
+
+<label>Upload Waste Image (Optional)</label>
+<input type="file" id="wasteImage">
+
+<label>Select Waste Type</label>
+<select id="wasteType">
+<option>Plastic / Dry Waste</option>
+<option>Wet / Food Waste</option>
+<option>E-Waste</option>
+<option>Medical Waste</option>
+<option>Mixed Waste</option>
+</select>
+
+<label>Enter Address</label>
+<textarea id="address" placeholder="Enter pickup address"></textarea>
+
+<button onclick="processWaste()">Analyze Waste</button>
+
+<div id="output" class="resultBox"></div>
+</div>
+
+<div class="card">
+<h2>📊 Recent Reports</h2>
+<div id="history"></div>
+</div>
+
+</div>
+
+<script>
+
+let history=[];
+function processWaste(){
+ let waste=document.getElementById("wasteType").value;
+ let address=document.getElementById("address").value;
+ let out=document.getElementById("output");
+
+ if(address===""){
+  out.innerHTML="⚠️ Please enter address!";
+  return;
+ }
+
+ let response="";
+
+ if(waste.includes("Plastic"))
+ response=`<span class='tag'>Dry Waste</span><br>Dispose in BLUE bin.<br>♻️ Recyclable materials: bottles, wrappers, packets.<br>Pickup Registered Successfully!`;
+
+ else if(waste.includes("Wet"))
+ response=`<span class='tag'>Wet Waste</span><br>Use GREEN bin.<br>🌱 Best for composting, biodegradable waste.<br>Pickup Scheduled!`;
+
+ else if(waste.includes("E-Waste"))
+ response=`<span class='tag'>E-Waste</span><br>⚠️ Hazardous!<br>Send to authorised e-recycling center.<br>Pickup Arranged!`;
+
+ else if(waste.includes("Medical"))
+ response=`<span class='tag'>Medical Waste</span><br>☣️ Bio-hazard material.<br>Only RED/YELLOW hospital bins.<br>Alert sent to authorities!`;
+
+ else
+ response=`<span class='tag'>Mixed Waste</span><br>❌ Not allowed.<br>Please separate dry and wet waste.<br>Guidelines sent!`;
+
+ out.innerHTML=response;
+
+ history.push(`${waste} ➝ ${address}`);
+ displayHistory();
+}
+
+function displayHistory(){
+ let h=document.getElementById("history");
+ h.innerHTML="";
+ history.slice(-4).forEach(x=>{
+  h.innerHTML+=`<div class='historyBox'>${x}</div>`;
+ });
+}
+
+</script>
+
+</body>
+</html>
